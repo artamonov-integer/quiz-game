@@ -1,0 +1,40 @@
+<window xmlns="http://www.haulmont.com/schema/cuba/gui/window.xsd"
+        class="com.integer.quiz.gui.app.answer.browse.AnswerBrowser"
+        messagesPack="com.integer.quiz.entity"
+        lookupComponent="table"
+        caption="msg://answer.browser.caption">
+    <dsContext>
+        <collectionDatasource
+                id="answerDs"
+                class="com.integer.quiz.entity.Answer"
+                view="answer.browse">
+            <query>
+                select answer from quiz$Answer answer order by answer.content
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="table" spacing="true">
+        <hbox spacing="true">
+            <groupBox id="filterBox" collapsable="false" stylename="edit-area">
+                <filter id="genericPlaceFilter"
+                        datasource="answerDs" manualApplyRequired="false">
+                    <properties include=".*" exclude=""/>
+                </filter>
+            </groupBox>
+        <upload id="answerLoader" caption="msg://loadAnswers.action"/>
+        </hbox>
+        <table id="table" editable="true" width="100%">
+            <buttonsPanel>
+                <button action="table.create" icon="icons/create.png"/>
+                <button action="table.edit" icon="icons/edit.png"/>
+                <button action="table.refresh" icon="icons/refresh.png"/>
+                <button action="table.remove" icon="icons/remove.png"/>
+                <button id="saveBtn" caption="msg://SaveAnswers.action"/>
+            </buttonsPanel>
+            <columns>
+                <column id="content" editable="true"/>
+            </columns>
+            <rows datasource="answerDs"/>
+        </table>
+    </layout>
+</window>

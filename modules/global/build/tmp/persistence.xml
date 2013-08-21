@@ -1,0 +1,13 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+  <persistence-unit name="quiz" transaction-type="RESOURCE_LOCAL">
+    <class>
+      com.integer.quiz.entity.Answer
+    </class>
+    <class>
+      com.integer.quiz.entity.Question
+    </class>
+    <properties>
+      <property name="openjpa.DetachState" value="loaded(DetachedStateField=true, DetachedStateManager=true)"/>
+    </properties>
+  </persistence-unit>
+</persistence>

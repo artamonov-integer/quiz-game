@@ -1,0 +1,43 @@
+<window xmlns="http://www.haulmont.com/schema/cuba/gui/window.xsd"
+        class="com.integer.quiz.gui.app.question.edit.QuestionEditor"
+        messagesPack="com.integer.quiz.entity"
+        datasource="questionDs"
+        caption="msg://question.editor.caption">
+    <dsContext>
+        <datasource
+                id="questionDs"
+                class="com.integer.quiz.entity.Question"
+                view="question.edit">
+        </datasource>
+        <collectionDatasource id="answerDs" class="com.integer.quiz.entity.Answer" view="_minimal"/>
+        <collectionDatasource id="fileDescriptorDs" class="com.haulmont.cuba.core.entity.FileDescriptor"
+                              view="_local">
+            <query>
+                select fd from sys$FileDescriptor fd where fd.extension='jpg' or fd.extension='png'
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="space" spacing="true">
+        <vbox width="400" spacing="true">
+            <hbox id="photo" height="200" align="MIDDLE_CENTER">
+            </hbox>
+            <hbox spacing="true" align="BOTTOM_CENTER">
+                <upload id="photoLoader"/>
+            </hbox>
+            <hbox spacing="true" align="BOTTOM_LEFT">
+                <textField id="answerTextField" width="250"/>
+                <button id="answerBtn" caption="msg://add.Answer"/>
+            </hbox>
+        </vbox>
+        <fieldGroup id="questionFieldGroup" datasource="questionDs" stylename="edit-area" width="500px">
+            <column width="100%">
+                <field id="content"/>
+                <field id="stage"/>
+                <field id="answer" optionsDatasource="answerDs"/>
+                <field id="image" optionsDatasource="fileDescriptorDs"/>
+            </column>
+        </fieldGroup>
+        <iframe id="buttons" src="/com/haulmont/cuba/gui/edit-window.actions.xml"/>
+        <hbox id="space"></hbox>
+    </layout>
+</window>

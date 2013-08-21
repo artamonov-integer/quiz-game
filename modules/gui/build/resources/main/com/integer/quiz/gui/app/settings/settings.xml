@@ -1,0 +1,23 @@
+<window xmlns="http://www.haulmont.com/schema/cuba/gui/window.xsd"
+        class="com.integer.quiz.gui.app.settings.SettingsBrowser"
+        messagesPack="com.integer.quiz.entity"
+        lookupComponent="table"
+        caption="msg://settings.caption">
+    <layout spacing="true">
+        <grid spacing="true" width="600">
+            <columns>
+                <column/>
+                <column/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <label value="msg://Settings.connectionString" width="150"/>
+                    <textField id="connectionStringTextField" editable="true" width="250"/>
+                    <button id="csBtn" caption="msg://Settings.changeBtn"/>
+                </row>
+
+            </rows>
+        </grid>
+    </layout>
+</window>

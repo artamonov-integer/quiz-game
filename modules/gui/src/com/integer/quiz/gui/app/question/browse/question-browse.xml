@@ -1,0 +1,30 @@
+<window xmlns="http://www.haulmont.com/schema/cuba/gui/window.xsd"
+        class="com.integer.quiz.gui.app.question.browse.QuestionBrowser"
+        messagesPack="com.integer.quiz.entity"
+        lookupComponent="table"
+        caption="msg://question.browser.caption">
+    <dsContext>
+        <collectionDatasource
+                id="questionDs"
+                class="com.integer.quiz.entity.Question"
+                view="question.browse">
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="table">
+        <table id="table" width="100%">
+            <buttonsPanel>
+                <button action="table.create" icon="icons/create.png"/>
+                <button action="table.edit" icon="icons/edit.png"/>
+                <button action="table.refresh" icon="icons/refresh.png"/>
+                <button action="table.remove" icon="icons/remove.png"/>
+            </buttonsPanel>
+            <columns>
+                <column id="content"/>
+                <column id="stage"/>
+                <column id="answer"/>
+                <column id="image"/>
+            </columns>
+            <rows datasource="questionDs"/>
+        </table>
+    </layout>
+</window>

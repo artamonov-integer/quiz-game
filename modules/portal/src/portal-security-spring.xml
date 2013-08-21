@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <!-- Logout from middleware on logout -->
+    <beans:bean id="cuba_PortalLogoutHandler" class="com.haulmont.cuba.portal.sys.security.PortalLogoutHandler">
+        <beans:property name="targetUrlParameter" value="/login"/>
+    </beans:bean>
+
+    <http auto-config="true">
+        <!-- resources -->
+        <intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
+        <!-- login & registration -->
+        <intercept-url pattern="/login/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
+        <!-- rest-api -->
+        <intercept-url pattern="/api/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
+        <!-- index page -->
+        <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/index" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
+        <form-login login-page='/login'
+                    default-target-url='/'
+                    always-use-default-target='true'
+                    authentication-failure-url="/login"/>
+
+        <!--logout, do not invalidate session, it makes cuba_PortalLogoutHandler-->
+        <logout invalidate-session="false"
+                logout-url="/logout"
+                success-handler-ref="cuba_PortalLogoutHandler"/>
+
+        <intercept-url pattern="/**" access="ROLE_USER"/>
+
+    </http>
+    <authentication-manager alias="authenticationManager"/>
+</beans:beans>

@@ -1,0 +1,7 @@
+<menu-config xmlns="http://schemas.haulmont.com/cuba/4.0/menu.xsd">
+    <menu id="application" insertBefore="administration">
+        <item id="quiz$Answer.browse"/>
+        <item id="quiz$Question.browse"/>
+        <item id="quiz$Settings"/>
+    </menu>
+</menu-config>

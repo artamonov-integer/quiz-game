@@ -1,0 +1,17 @@
+<views xmlns="http://schemas.haulmont.com/cuba/4.0/view.xsd">
+    <view entity="quiz$Answer" name="answer.edit" extends="_local">
+    </view>
+
+    <view entity="quiz$Answer" name="answer.browse" extends="_local">
+    </view>
+
+    <view entity="quiz$Question" name="question.edit" extends="_local">
+        <property name="image" view="_local"/>
+        <property name="answer" view="_local"/>
+    </view>
+
+    <view entity="quiz$Question" name="question.browse" extends="_local">
+        <property name="image" view="_minimal"/>
+        <property name="answer" view="_minimal"/>
+    </view>
+</views>

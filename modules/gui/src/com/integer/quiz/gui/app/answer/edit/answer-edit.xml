@@ -1,0 +1,23 @@
+<window xmlns="http://www.haulmont.com/schema/cuba/gui/window.xsd"
+        class="com.integer.quiz.gui.app.answer.edit.AnswerEditor"
+        messagesPack="com.integer.quiz.entity"
+        datasource="answerDs"
+        caption="msg://answer.editor.caption">
+    <dsContext>
+        <datasource
+                id="answerDs"
+                class="com.integer.quiz.entity.Answer"
+                view="answer.edit">
+        </datasource>
+
+    </dsContext>
+    <layout expand="space">
+        <fieldGroup datasource="answerDs" stylename="edit-area" width="500px">
+            <column width="100%">
+                <field id="content"/>
+            </column>
+        </fieldGroup>
+        <iframe id="buttons" src="/com/haulmont/cuba/gui/edit-window.actions.xml"/>
+        <hbox id="space"></hbox>
+    </layout>
+</window>
