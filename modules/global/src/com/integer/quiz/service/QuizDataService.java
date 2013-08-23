@@ -12,4 +12,6 @@ public interface QuizDataService {
     public void setConnectionString(String connectionString);
 
     public String getConnectionString();
+
+    public void refreshAnswerList();
 }

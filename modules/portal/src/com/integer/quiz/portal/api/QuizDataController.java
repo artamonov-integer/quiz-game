@@ -32,7 +32,7 @@ public class QuizDataController {
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
         try {
             response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html");
+            response.setContentType("text/xml");
             String resultStringData = quizDataService.getAnswersXml();
             response.getWriter().print(resultStringData);
         } catch (Exception ex) {
@@ -49,7 +49,7 @@ public class QuizDataController {
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
         try {
             response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html");
+            response.setContentType("text/xml");
             Integer stage;
             try {
                 stage = Integer.parseInt(stageStr);

@@ -12,6 +12,9 @@ public class SettingsBrowser extends AbstractLookup {
     private Button csBtn;
 
     @Inject
+    private Button refreshAnswersBtn;
+
+    @Inject
     private TextField connectionStringTextField;
 
     @Inject
@@ -27,6 +30,12 @@ public class SettingsBrowser extends AbstractLookup {
                 if (connectionStringTextField.getValue() != null) {
                     quizDataService.setConnectionString((String)connectionStringTextField.getValue());
                 }
+            }
+        });
+        refreshAnswersBtn.setAction(new AbstractAction("") {
+            @Override
+            public void actionPerform(Component component) {
+                quizDataService.refreshAnswerList();
             }
         });
     }

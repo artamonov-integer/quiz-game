@@ -14,7 +14,7 @@ public class Question extends StandardEntity {
     @Column(name="STAGE")
     protected Integer stage;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ANSWER")
     protected Answer answer;
 

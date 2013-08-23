@@ -16,7 +16,9 @@
                     <textField id="connectionStringTextField" editable="true" width="250"/>
                     <button id="csBtn" caption="msg://Settings.changeBtn"/>
                 </row>
-
+                <row>
+                    <button id="refreshAnswersBtn" caption="msg://Settings.refreshAnswersBtn"/>
+                </row>
             </rows>
         </grid>
     </layout>

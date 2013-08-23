@@ -5,6 +5,7 @@ import com.integer.quiz.app.Storage;
 import com.integer.quiz.app.XMLHelper;
 import com.integer.quiz.entity.Answer;
 import com.integer.quiz.entity.Question;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Element;
 
@@ -15,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -28,6 +30,9 @@ public class QuizDataServiceBean implements QuizDataService {
     private XMLHelper helper;
 
     String connectionString = "http://localhost:8383/";
+
+    List<Answer> answerList = null;
+    Integer answerListSize = null;
 
     @Override
     public String getAnswersXml() {
@@ -68,8 +73,6 @@ public class QuizDataServiceBean implements QuizDataService {
 
     @Override
     public String getQuestionsXml(Integer stage) {
-
-
         String s = "";
         List<Question> questionList = storage.getQuestions(stage);
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -83,6 +86,8 @@ public class QuizDataServiceBean implements QuizDataService {
         Element rootElement = document.createElement("data");
         document.appendChild(rootElement);
         if (questionList != null && questionList.size() > 0) {
+            if(answerListSize==null)
+                refreshAnswerList();
             for (Question question : questionList) {
                 Element rateElement = document.createElement("question");
                 rateElement.setAttribute("content", question.getContent());
@@ -95,7 +100,7 @@ public class QuizDataServiceBean implements QuizDataService {
 
                     Element answersElement = document.createElement("answers");
 
-                    List<Answer> answerList = storage.getRandomAnswers(question.getAnswer());
+                    List<Answer> answerList = getRandomAnswers(question.getAnswer());
                     if (answerList != null && answerList.size() == 4) {
                         for (Answer answer : answerList) {
                             Element answerElement = document.createElement("answer");
@@ -128,12 +133,12 @@ public class QuizDataServiceBean implements QuizDataService {
     }
 
     @Override
-    public void setConnectionString(String connectionString){
+    public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
 
     @Override
-    public String getConnectionString(){
+    public String getConnectionString() {
         return this.connectionString;
     }
 
@@ -141,5 +146,26 @@ public class QuizDataServiceBean implements QuizDataService {
         Random rand = new Random();
         int randomNum = rand.nextInt((max + 1) - min) + min;
         return randomNum;
+    }
+
+    public List<Answer> getRandomAnswers(Answer wrightAnswer) {
+        List<Answer> randomAnswerList = new ArrayList<>();
+        if (answerListSize > 4) {
+            while (randomAnswerList.size() < 4) {
+                Answer answer = answerList.get(randInt(0, answerListSize - 1));
+                if (!randomAnswerList.contains(answer) && !wrightAnswer.equals(answer))
+                    randomAnswerList.add(answer);
+            }
+            randomAnswerList.add(randInt(0, 3), wrightAnswer);
+            randomAnswerList.remove(4);
+        }
+        return randomAnswerList;
+    }
+
+    @Override
+    public void refreshAnswerList(){
+        answerList = storage.getAnswers();
+        if (answerList != null)
+            answerListSize = answerList.size();
     }
 }
