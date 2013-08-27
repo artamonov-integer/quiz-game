@@ -15,7 +15,7 @@ public class Score extends StandardEntity {
     @Column(name="TYPE")
     protected Integer quizType;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     protected User user;
 

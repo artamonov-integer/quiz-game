@@ -1,5 +1,6 @@
 package com.integer.quiz.portal.api;
 
+import com.haulmont.cuba.portal.restapi.Authentication;
 import com.integer.quiz.service.QuizDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,7 @@ public class QuizDataController {
                 stage = Integer.parseInt(stageStr);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
+                response.setContentType("text/html");
                 response.getWriter().print("wrong stage!");
                 return;
             }
@@ -67,8 +69,8 @@ public class QuizDataController {
         }
     }
 
-    @RequestMapping(value = "/api/getScore", method = RequestMethod.GET)
-    public void getScore(
+    @RequestMapping(value = "/api/getTopScore", method = RequestMethod.GET)
+    public void getTopScore(
             @RequestParam(value = "n") String countStr,
             @RequestParam(value = "t") String typeStr,
             HttpServletRequest request,
@@ -84,16 +86,87 @@ public class QuizDataController {
                 type = Integer.parseInt(typeStr);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
+                response.setContentType("text/html");
                 response.getWriter().print("wrong number parameter!");
                 return;
             }
-            String resultStringData = quizDataService.getScoreXml(count, type);
-//            String resultStringData = "test";
+            String resultStringData = quizDataService.getTopScoreXml(count, type, null);
             response.getWriter().print(resultStringData);
 
         } catch (Exception ex) {
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/api/getScore", method = RequestMethod.GET)
+    public void getScore(
+            @RequestParam(value = "s") String sessionId,
+            @RequestParam(value = "t") String typeStr,
+            HttpServletRequest request,
+            HttpServletResponse
+                    response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
+        Authentication authentication = Authentication.me(sessionId);
+        if (authentication == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/xml");
+            Integer count;
+            Integer type;
+            try {
+                type = Integer.parseInt(typeStr);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                response.setContentType("text/html");
+                response.getWriter().print("wrong number parameter!");
+                return;
+            }
+            String resultStringData = quizDataService.getScoreXml(type, sessionId);
+            response.getWriter().print(resultStringData);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } finally {
+            authentication.forget();
+        }
+    }
+
+    @RequestMapping(value = "/api/addScore", method = RequestMethod.GET)
+    public void addScore(
+            @RequestParam(value = "s") String sessionId,
+            @RequestParam(value = "p") String pointsStr,
+            @RequestParam(value = "t") String typeStr,
+            HttpServletRequest request,
+            HttpServletResponse
+                    response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
+        Authentication authentication = Authentication.me(sessionId);
+        if (authentication == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html");
+            Integer points;
+            Integer type;
+            try {
+                points = Integer.parseInt(pointsStr);
+                type = Integer.parseInt(typeStr);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                response.getWriter().print("wrong number parameter!");
+                return;
+            }
+            String resultStringData = quizDataService.addScore(points, type);
+            response.getWriter().print(resultStringData);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } finally {
+            authentication.forget();
         }
     }
 }
