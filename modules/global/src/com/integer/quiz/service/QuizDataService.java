@@ -14,4 +14,6 @@ public interface QuizDataService {
     public String getConnectionString();
 
     public void refreshAnswerList();
+
+    public String getScoreXml(Integer count, Integer type);
 }

@@ -5,6 +5,8 @@ import com.integer.quiz.app.Storage;
 import com.integer.quiz.app.XMLHelper;
 import com.integer.quiz.entity.Answer;
 import com.integer.quiz.entity.Question;
+import com.integer.quiz.entity.QuizType;
+import com.integer.quiz.entity.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Element;
@@ -113,6 +115,47 @@ public class QuizDataServiceBean implements QuizDataService {
                         }
                     }
                     rateElement.appendChild(answersElement);
+                    rootElement.appendChild(rateElement);
+                }
+            }
+        }
+        try {
+            s = helper.convertXMLToString(document);
+        } catch (TransformerException e) {
+            e.printStackTrace();
+            return "error " + e.getMessage();
+        }
+        try {
+            s = helper.convertXMLToString(document);
+        } catch (TransformerException e) {
+            e.printStackTrace();
+            return "error " + e.getMessage();
+        }
+        return s;
+    }
+
+    public String getScoreXml(Integer count, Integer type){
+        String s = "";
+        QuizType quizType = QuizType.fromId(type);
+        List<Score> scoreList = null;
+        if(quizType!=null)
+            scoreList = storage.getScores(count,quizType.getId());
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = null;
+        try {
+            documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+        org.w3c.dom.Document document = documentBuilder.newDocument();
+        Element rootElement = document.createElement("data");
+        document.appendChild(rootElement);
+        if (scoreList != null && scoreList.size() > 0) {
+            for (Score score : scoreList) {
+                Element rateElement = document.createElement("score");
+                if(score.getPoints()!=null && score.getUser() != null){
+                    rateElement.setAttribute("points", score.getPoints().toString());
+                    rateElement.setAttribute("user", score.getUser().getCaption());
                     rootElement.appendChild(rateElement);
                 }
             }

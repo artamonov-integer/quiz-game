@@ -1,0 +1,29 @@
+<window xmlns="http://www.haulmont.com/schema/cuba/gui/window.xsd"
+        class="com.integer.quiz.gui.app.score.browse.ScoreBrowser"
+        messagesPack="com.integer.quiz.entity"
+        lookupComponent="table"
+        caption="msg://score.browser.caption">
+    <dsContext>
+        <collectionDatasource
+                id="scoreDs"
+                class="com.integer.quiz.entity.Score"
+                view="score.browse">
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="table">
+        <table id="table" width="100%">
+            <buttonsPanel>
+                <button action="table.create" icon="icons/create.png"/>
+                <button action="table.edit" icon="icons/edit.png"/>
+                <button action="table.refresh" icon="icons/refresh.png"/>
+                <button action="table.remove" icon="icons/remove.png"/>
+            </buttonsPanel>
+            <columns>
+                <column id="points"/>
+                <column id="quizType"/>
+                <column id="user"/>
+            </columns>
+            <rows datasource="scoreDs"/>
+        </table>
+    </layout>
+</window>

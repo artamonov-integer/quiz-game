@@ -2,6 +2,7 @@
     <menu id="application" insertBefore="administration">
         <item id="quiz$Answer.browse"/>
         <item id="quiz$Question.browse"/>
+        <item id="quiz$Score.browse"/>
         <item id="quiz$Settings"/>
     </menu>
 </menu-config>

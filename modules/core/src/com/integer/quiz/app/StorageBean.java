@@ -1,12 +1,10 @@
 package com.integer.quiz.app;
 
-import com.haulmont.cuba.core.EntityManager;
-import com.haulmont.cuba.core.Persistence;
-import com.haulmont.cuba.core.Query;
-import com.haulmont.cuba.core.Transaction;
+import com.haulmont.cuba.core.*;
 import com.haulmont.cuba.core.global.MetadataProvider;
 import com.integer.quiz.entity.Answer;
 import com.integer.quiz.entity.Question;
+import com.integer.quiz.entity.Score;
 
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
@@ -52,6 +50,26 @@ public class StorageBean implements Storage {
             tx.end();
         }
         return resultlist;
+    }
+
+    @Override
+    public List<Score> getScores(Integer count, Integer type){
+        Transaction tx = persistence.createTransaction();
+        EntityManager em = persistence.getEntityManager();
+        List<Score> resultList = null;
+        em.setView(MetadataProvider.getViewRepository().getView(Score.class, "score.edit"));
+        try {
+            TypedQuery q = em.createQuery("SELECT score FROM quiz$Score score where score.points is not null" +
+                    " and score.user is not null and score.quizType=?1 order by score.points desc ", Score.class);
+            q.setParameter(1, type);
+            q.setMaxResults(count);
+            resultList = q.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            tx.end();
+        }
+        return resultList;
     }
 
     @Override

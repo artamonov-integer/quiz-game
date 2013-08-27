@@ -14,4 +14,12 @@
         <property name="image" view="_minimal"/>
         <property name="answer" view="_minimal"/>
     </view>
+
+    <view entity="quiz$Score" name="score.browse" extends="_local">
+        <property name="user" view="_minimal"/>
+    </view>
+
+    <view entity="quiz$Score" name="score.edit" extends="_local">
+        <property name="user" view="_local"/>
+    </view>
 </views>

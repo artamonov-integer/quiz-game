@@ -36,5 +36,26 @@ foreign key (IMAGE) references SYS_FILE(ID)^
 
 alter table quiz_question add column STAGE integer^
 
+----- QUIZ_SCORE creation -----
+create table QUIZ_SCORE (
+    ID uuid not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    VERSION integer,
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    POINTS integer,
+    TYPE integer,
+    USER_ID uuid,
+    primary key (ID)
+)^
+
+alter table QUIZ_SCORE add constraint FK_QUIZ_SCORE_TO_SEC_USER
+foreign key (USER_ID) references SEC_USER(ID)^
+
+
+
 
 

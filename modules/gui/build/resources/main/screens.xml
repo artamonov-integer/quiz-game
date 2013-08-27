@@ -4,4 +4,6 @@
     <screen id="quiz$Question.browse" template="/com/integer/quiz/gui/app/question/browse/question-browse.xml"/>
     <screen id="quiz$Question.edit" template="/com/integer/quiz/gui/app/question/edit/question-edit.xml"/>
     <screen id="quiz$Settings" template="/com/integer/quiz/gui/app/settings/settings.xml"/>
+    <screen id="quiz$Score.browse" template="/com/integer/quiz/gui/app/score/browse/score-browse.xml"/>
+    <screen id="quiz$Score.edit" template="/com/integer/quiz/gui/app/score/edit/score-edit.xml"/>
 </screen-config>

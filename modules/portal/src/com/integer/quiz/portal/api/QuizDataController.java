@@ -55,7 +55,7 @@ public class QuizDataController {
                 stage = Integer.parseInt(stageStr);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
-                response.getWriter().print("wrong stage");
+                response.getWriter().print("wrong stage!");
                 return;
             }
             String resultStringData = quizDataService.getQuestionsXml(stage);
@@ -67,4 +67,33 @@ public class QuizDataController {
         }
     }
 
+    @RequestMapping(value = "/api/getScore", method = RequestMethod.GET)
+    public void getScore(
+            @RequestParam(value = "n") String countStr,
+            @RequestParam(value = "t") String typeStr,
+            HttpServletRequest request,
+            HttpServletResponse
+                    response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/xml");
+            Integer count;
+            Integer type;
+            try {
+                count = Integer.parseInt(countStr);
+                type = Integer.parseInt(typeStr);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                response.getWriter().print("wrong number parameter!");
+                return;
+            }
+            String resultStringData = quizDataService.getScoreXml(count, type);
+//            String resultStringData = "test";
+            response.getWriter().print(resultStringData);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
 }

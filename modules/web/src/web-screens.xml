@@ -1,5 +1,3 @@
 <screen-config xmlns="http://schemas.haulmont.com/cuba/4.0/screens.xsd">
-
     <include file="/screens.xml"/>
-
 </screen-config>
