@@ -92,6 +92,7 @@ public class QuizDataServiceBean implements QuizDataService {
         if (questionList != null && questionList.size() > 0) {
             if (answerListSize == null)
                 refreshAnswerList();
+            List<Element> elementList = new ArrayList<>();
             for (Question question : questionList) {
                 Element rateElement = document.createElement("question");
                 rateElement.setAttribute("content", question.getContent());
@@ -110,15 +111,21 @@ public class QuizDataServiceBean implements QuizDataService {
                             Element answerElement = document.createElement("answer");
                             answerElement.setAttribute("content", answer.getContent());
                             if (answer.equals(question.getAnswer()))
-                                answerElement.setAttribute("wright", "1");
+                                answerElement.setAttribute("right", "1");
                             else
-                                answerElement.setAttribute("wright", "0");
+                                answerElement.setAttribute("right", "0");
                             answersElement.appendChild(answerElement);
                         }
                     }
                     rateElement.appendChild(answersElement);
-                    rootElement.appendChild(rateElement);
+                    elementList.add(rateElement);
                 }
+            }
+            while (!elementList.isEmpty()) {
+                Integer elementNumber = randInt(0, elementList.size() - 1);
+                Element questionElement = elementList.get(elementNumber);
+                rootElement.appendChild(questionElement);
+                elementList.remove(questionElement);
             }
         }
         try {
@@ -201,17 +208,17 @@ public class QuizDataServiceBean implements QuizDataService {
         org.w3c.dom.Document document = documentBuilder.newDocument();
         Element rootElement = document.createElement("data");
         document.appendChild(rootElement);
-            QuizType quizType = QuizType.fromId(type);
-            User user = UserSessionProvider.getUserSession().getUser();
-            if (user != null && quizType != null) {
-                //add personal high score
-                HashMap<String, String> map = storage.getScorePosition(quizType.getId(), user);
-                rootElement.setAttribute("position", map.get("position"));
-                rootElement.setAttribute("points", map.get("points"));
-            }else{
-                rootElement.setAttribute("position", "");
-                rootElement.setAttribute("points", "");
-            }
+        QuizType quizType = QuizType.fromId(type);
+        User user = UserSessionProvider.getUserSession().getUser();
+        if (user != null && quizType != null) {
+            //add personal high score
+            HashMap<String, String> map = storage.getScorePosition(quizType.getId(), user);
+            rootElement.setAttribute("position", map.get("position"));
+            rootElement.setAttribute("points", map.get("points"));
+        } else {
+            rootElement.setAttribute("position", "");
+            rootElement.setAttribute("points", "");
+        }
         try {
             s = helper.convertXMLToString(document);
         } catch (TransformerException e) {
