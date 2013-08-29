@@ -1,6 +1,7 @@
 package com.integer.quiz.app;
 
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.security.entity.Group;
 import com.haulmont.cuba.security.entity.User;
 import com.integer.quiz.entity.Answer;
 import com.integer.quiz.entity.Question;
@@ -19,4 +20,5 @@ public interface Storage {
     public List<Answer> getRandomAnswers(Answer wrightAnswer);
     public Score getScore(Integer type, User user);
     public HashMap<String, String> getScorePosition(Integer type, User user);
+    public Group getGroupByName(String name);
 }

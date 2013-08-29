@@ -2,6 +2,9 @@ package com.integer.quiz.service;
 
 import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.global.UserSessionProvider;
+import com.haulmont.cuba.core.jmx.PasswordEncryptionSupport;
+import com.haulmont.cuba.core.sys.encryption.Sha1EncryptionModule;
+import com.haulmont.cuba.security.entity.Group;
 import com.haulmont.cuba.security.entity.User;
 import com.integer.quiz.app.Storage;
 import com.integer.quiz.app.XMLHelper;
@@ -17,6 +20,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +39,8 @@ public class QuizDataServiceBean implements QuizDataService {
     private XMLHelper helper;
 
     String connectionString = "http://localhost:8383/";
+
+    Group participantGroup = null;
 
     List<Answer> answerList = null;
     Integer answerListSize = null;
@@ -93,6 +100,7 @@ public class QuizDataServiceBean implements QuizDataService {
             if (answerListSize == null)
                 refreshAnswerList();
             List<Element> elementList = new ArrayList<>();
+            for(int i=0;i<100;i++)
             for (Question question : questionList) {
                 Element rateElement = document.createElement("question");
                 rateElement.setAttribute("content", question.getContent());
@@ -294,5 +302,33 @@ public class QuizDataServiceBean implements QuizDataService {
         answerList = storage.getAnswers();
         if (answerList != null)
             answerListSize = answerList.size();
+    }
+
+    @Override
+    public String signUp(String login, String email){
+        //check login and email
+
+        //create user
+        if(!login.isEmpty() && !email.isEmpty()){
+            User user = new User();
+            user.setEmail(email);
+            user.setLogin(login);
+            Sha1EncryptionModule sha = new Sha1EncryptionModule();
+            String password = sha.getPasswordHash(user.getId(),email);
+            user.setPassword(password);
+            //user.setGroup(Group);
+            user.setActive(true);
+            storage.createOrUpdateEntity(user);
+        }
+        //send link on email
+
+        return "on your email sent a link to confirm your registration!";
+    }
+
+    private Group getParticipantGroup(){
+        if(this.participantGroup==null){
+            this.participantGroup = storage.getGroupByName("Quiz Participant");
+        }
+        return this.participantGroup;
     }
 }

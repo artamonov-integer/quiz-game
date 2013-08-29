@@ -3,6 +3,7 @@ package com.integer.quiz.app;
 import com.haulmont.cuba.core.*;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.global.MetadataProvider;
+import com.haulmont.cuba.security.entity.Group;
 import com.haulmont.cuba.security.entity.User;
 import com.integer.quiz.entity.Answer;
 import com.integer.quiz.entity.Question;
@@ -124,6 +125,25 @@ public class StorageBean implements Storage {
             }
         }
         return map;
+    }
+
+    @Override
+    public Group getGroupByName(String name){
+        Transaction tx = persistence.createTransaction();
+        EntityManager em = persistence.getEntityManager();
+        try {
+            TypedQuery q = em.createQuery("select group from sec$Group group where group.name = ?1", Group.class);
+            q.setParameter(1, name);
+            List resultList = q.getResultList();
+            if ((resultList != null) && !resultList.isEmpty())
+                return (Group) resultList.get(0);
+            else return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            tx.end();
+        }
     }
 
     public Long getScorePosition(Integer points, Integer type) {

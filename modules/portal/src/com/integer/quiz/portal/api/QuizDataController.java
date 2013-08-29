@@ -169,4 +169,23 @@ public class QuizDataController {
             authentication.forget();
         }
     }
+
+    @RequestMapping(value = "/api/signUp", method = RequestMethod.GET)
+    public void signUp(
+            @RequestParam(value = "l") String login,
+            @RequestParam(value = "e") String email,
+            HttpServletRequest request,
+            HttpServletResponse
+                    response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html");
+            String resultStringData = quizDataService.signUp(login, email);
+            response.getWriter().print(resultStringData);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
 }

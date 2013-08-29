@@ -20,4 +20,6 @@ public interface QuizDataService {
     public String getScoreXml(Integer type, String sessionId);
 
     public String addScore(Integer points, Integer type);
+
+    public String signUp(String login, String email);
 }
