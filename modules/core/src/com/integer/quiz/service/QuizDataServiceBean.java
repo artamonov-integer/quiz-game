@@ -181,6 +181,9 @@ public class QuizDataServiceBean implements QuizDataService {
         document.appendChild(rootElement);
         QuizType[] quizTypeList = QuizType.values();
         for (QuizType quizType : quizTypeList) {
+            Element quizElement = document.createElement("quiz");
+            quizElement.setAttribute("type", quizType.getId().toString());
+            rootElement.appendChild(quizElement);
             scoreList = storage.getScores(10, quizType.getId());
             if (scoreList != null && scoreList.size() > 0) {
                 for (Score score : scoreList) {
@@ -188,7 +191,7 @@ public class QuizDataServiceBean implements QuizDataService {
                     if (score.getPoints() != null && score.getUser() != null) {
                         rateElement.setAttribute("points", score.getPoints().toString());
                         rateElement.setAttribute("user", score.getUser().getCaption());
-                        rootElement.appendChild(rateElement);
+                        quizElement.appendChild(rateElement);
                     }
                 }
             }
@@ -197,8 +200,8 @@ public class QuizDataServiceBean implements QuizDataService {
                 User user = UserSessionProvider.getUserSession().getUser();
                 if (user != null && quizType != null) {
                     HashMap<String, String> map = storage.getScorePosition(quizType.getId(), user);
-                    rootElement.setAttribute("position", map.get("position"));
-                    rootElement.setAttribute("points", map.get("points"));
+                    quizElement.setAttribute("position", map.get("position"));
+                    quizElement.setAttribute("points", map.get("points"));
                 }
             }
         }
