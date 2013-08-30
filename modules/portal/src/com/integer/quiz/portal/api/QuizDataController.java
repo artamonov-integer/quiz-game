@@ -44,23 +44,23 @@ public class QuizDataController {
 
     @RequestMapping(value = "/api/getQuestions", method = RequestMethod.GET)
     public void getQuestion(
-            @RequestParam(value = "s") String stageStr,
+//            @RequestParam(value = "s") String stageStr,
             HttpServletRequest request,
             HttpServletResponse
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
         try {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/xml");
-            Integer stage;
-            try {
-                stage = Integer.parseInt(stageStr);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                response.setContentType("text/html");
-                response.getWriter().print("wrong stage!");
-                return;
-            }
-            String resultStringData = quizDataService.getQuestionsXml(stage);
+//            Integer stage;
+//            try {
+//                stage = Integer.parseInt(stageStr);
+//            } catch (NumberFormatException e) {
+//                e.printStackTrace();
+//                response.setContentType("text/html");
+//                response.getWriter().print("wrong stage!");
+//                return;
+//            }
+            String resultStringData = quizDataService.getQuestionsXml();
             response.getWriter().print(resultStringData);
 
         } catch (Exception ex) {
@@ -69,7 +69,7 @@ public class QuizDataController {
         }
     }
 
-    @RequestMapping(value = "/api/getTopScore", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/api/getTopScore", method = RequestMethod.GET)
     public void getTopScore(
             @RequestParam(value = "n") String countStr,
             @RequestParam(value = "t") String typeStr,
@@ -97,12 +97,12 @@ public class QuizDataController {
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
-    }
+    }*/
 
     @RequestMapping(value = "/api/getScore", method = RequestMethod.GET)
     public void getScore(
             @RequestParam(value = "s") String sessionId,
-            @RequestParam(value = "t") String typeStr,
+//            @RequestParam(value = "t") String typeStr,
             HttpServletRequest request,
             HttpServletResponse
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
@@ -113,17 +113,17 @@ public class QuizDataController {
         try {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/xml");
-            Integer count;
-            Integer type;
-            try {
-                type = Integer.parseInt(typeStr);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                response.setContentType("text/html");
-                response.getWriter().print("wrong number parameter!");
-                return;
-            }
-            String resultStringData = quizDataService.getScoreXml(type, sessionId);
+//            Integer count;
+//            Integer type;
+//            try {
+//                type = Integer.parseInt(typeStr);
+//            } catch (NumberFormatException e) {
+//                e.printStackTrace();
+//                response.setContentType("text/html");
+//                response.getWriter().print("wrong number parameter!");
+//                return;
+//            }
+            String resultStringData = quizDataService.getTopScoreXml(sessionId);
             response.getWriter().print(resultStringData);
 
         } catch (Exception ex) {
@@ -181,6 +181,23 @@ public class QuizDataController {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html");
             String resultStringData = quizDataService.signUp(login, email);
+            response.getWriter().print(resultStringData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/api/confirmRegistration", method = RequestMethod.GET)
+    public void confirmRegistration(
+            @RequestParam(value = "id") String id,
+            HttpServletRequest request,
+            HttpServletResponse
+                    response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html");
+            String resultStringData = quizDataService.confirmRegistration(id);
             response.getWriter().print(resultStringData);
 
         } catch (Exception ex) {

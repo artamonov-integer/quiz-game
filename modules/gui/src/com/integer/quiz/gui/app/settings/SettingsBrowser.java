@@ -4,6 +4,7 @@ import com.haulmont.cuba.gui.components.*;
 import com.integer.quiz.service.QuizDataService;
 
 import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SettingsBrowser extends AbstractLookup {
@@ -15,7 +16,13 @@ public class SettingsBrowser extends AbstractLookup {
     private Button refreshAnswersBtn;
 
     @Inject
-    private TextField connectionStringTextField;
+    private TextField hostTextField;
+
+    @Inject
+    private TextField portTextField;
+
+    @Inject
+    private TextField imagePortTextField;
 
     @Inject
     private QuizDataService quizDataService;
@@ -23,13 +30,18 @@ public class SettingsBrowser extends AbstractLookup {
     @Override
     public void init(Map<String, Object> params) {
 
-        connectionStringTextField.setValue(quizDataService.getConnectionString());
+        HashMap<String,String> connectionMap = quizDataService.getConnectionSettings();
+        hostTextField.setValue(connectionMap.get("host"));
+        portTextField.setValue(connectionMap.get("port"));
+        imagePortTextField.setValue(connectionMap.get("imagePort"));
         csBtn.setAction(new AbstractAction("") {
             @Override
             public void actionPerform(Component component) {
-                if (connectionStringTextField.getValue() != null) {
-                    quizDataService.setConnectionString((String)connectionStringTextField.getValue());
-                }
+                String host = (String)hostTextField.getValue();
+                String port = (String)portTextField.getValue();
+                String imagePort = (String)imagePortTextField.getValue();
+                quizDataService.setConnectionSettings(host,port,imagePort);
+
             }
         });
         refreshAnswersBtn.setAction(new AbstractAction("") {

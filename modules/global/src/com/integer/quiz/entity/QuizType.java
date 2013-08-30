@@ -4,7 +4,8 @@ import com.haulmont.chile.core.datatypes.impl.EnumClass;
 
 public enum  QuizType implements EnumClass<Integer> {
     OUT_OF_TIME(10),
-    TO_FIRST_MISTAKE(20);
+    TO_FIRST_MISTAKE(20),
+    TO_THIRD_MISTAKE(30);
     private Integer id;
 
     QuizType(Integer id){

@@ -4,16 +4,25 @@
         lookupComponent="table"
         caption="msg://settings.caption">
     <layout spacing="true">
-        <grid spacing="true" width="600">
+        <grid spacing="true" width="600" stylename="edit-area">
             <columns>
-                <column/>
                 <column/>
                 <column/>
             </columns>
             <rows>
                 <row>
-                    <label value="msg://Settings.connectionString" width="150"/>
-                    <textField id="connectionStringTextField" editable="true" width="250"/>
+                    <label value="msg://Settings.host" width="150"/>
+                    <textField id="hostTextField" editable="true" width="250"/>
+                </row>
+                <row>
+                    <label value="msg://Settings.port" width="150"/>
+                    <textField id="portTextField" editable="true" width="250"/>
+                </row>
+                <row>
+                    <label value="msg://Settings.imagePort" width="150"/>
+                    <textField id="imagePortTextField" editable="true" width="250"/>
+                </row>
+                <row>
                     <button id="csBtn" caption="msg://Settings.changeBtn"/>
                 </row>
                 <row>

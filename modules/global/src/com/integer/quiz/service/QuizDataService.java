@@ -1,25 +1,28 @@
 package com.integer.quiz.service;
 
 import java.lang.String;
+import java.util.HashMap;
 
 public interface QuizDataService {
     String NAME = "quiz_QuizDataService";
 
     public String getAnswersXml();
 
-    public String getQuestionsXml(Integer stage);
+    public String getQuestionsXml();
 
-    public void setConnectionString(String connectionString);
+    public void setConnectionSettings(String host, String port, String imagePort);
 
-    public String getConnectionString();
+    public HashMap<String,String> getConnectionSettings();
 
     public void refreshAnswerList();
 
-    public String getTopScoreXml(Integer count, Integer type, String sessionId);
+    public String getTopScoreXml(String sessionId);
 
     public String getScoreXml(Integer type, String sessionId);
 
     public String addScore(Integer points, Integer type);
 
     public String signUp(String login, String email);
+
+    public String confirmRegistration(String id);
 }

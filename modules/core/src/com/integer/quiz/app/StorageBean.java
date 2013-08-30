@@ -4,6 +4,7 @@ import com.haulmont.cuba.core.*;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.global.MetadataProvider;
 import com.haulmont.cuba.security.entity.Group;
+import com.haulmont.cuba.security.entity.Role;
 import com.haulmont.cuba.security.entity.User;
 import com.integer.quiz.entity.Answer;
 import com.integer.quiz.entity.Question;
@@ -11,10 +12,7 @@ import com.integer.quiz.entity.Score;
 
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @ManagedBean(Storage.NAME)
 public class StorageBean implements Storage {
@@ -54,14 +52,14 @@ public class StorageBean implements Storage {
     }
 
     @Override
-    public List<Question> getQuestions(Integer stage) {
+    public List<Question> getQuestions() {
         Transaction tx = persistence.createTransaction();
         EntityManager em = persistence.getEntityManager();
         List<Question> resultlist = null;
         em.setView(MetadataProvider.getViewRepository().getView(Question.class, "question.edit"));
         try {
-            Query q = em.createQuery("SELECT question FROM quiz$Question question where question.stage=?1");
-            q.setParameter(1, stage);
+            Query q = em.createQuery("SELECT question FROM quiz$Question question");
+//            q.setParameter(1, stage);
             resultlist = q.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,11 +130,87 @@ public class StorageBean implements Storage {
         Transaction tx = persistence.createTransaction();
         EntityManager em = persistence.getEntityManager();
         try {
-            TypedQuery q = em.createQuery("select group from sec$Group group where group.name = ?1", Group.class);
+            TypedQuery q = em.createQuery("select gr from sec$Group gr where gr.name = ?1", Group.class);
             q.setParameter(1, name);
             List resultList = q.getResultList();
             if ((resultList != null) && !resultList.isEmpty())
                 return (Group) resultList.get(0);
+            else return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            tx.end();
+        }
+    }
+
+    @Override
+    public Group addGroup(String name){
+        Group group = new Group();
+        group.setName(name);
+        createOrUpdateEntity(group);
+        return group;
+    }
+
+    @Override
+    public Role getRoleByName(String name){
+        Transaction tx = persistence.createTransaction();
+        EntityManager em = persistence.getEntityManager();
+        try {
+            TypedQuery q = em.createQuery("select role from sec$Role role where role.name = ?1", Role.class);
+            q.setParameter(1, name);
+            List resultList = q.getResultList();
+            if ((resultList != null) && !resultList.isEmpty())
+                return (Role) resultList.get(0);
+            else return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            tx.end();
+        }
+    }
+
+    @Override
+    public Role addRole(String name){
+        Role role = new Role();
+        role.setName(name);
+        createOrUpdateEntity(role);
+        return role;
+    }
+
+    @Override
+    public User getUserById(UUID id){
+        Transaction tx = persistence.createTransaction();
+        EntityManager em = persistence.getEntityManager();
+        try {
+            TypedQuery q = em.createQuery("select user from sec$User user where user.id = ?1", User.class);
+            q.setView(MetadataProvider.getViewRepository().getView(User.class, "user.edit"));
+            q.setParameter(1, id);
+            List resultList = q.getResultList();
+            if ((resultList != null) && !resultList.isEmpty())
+                return (User) resultList.get(0);
+            else return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            tx.end();
+        }
+    }
+
+    @Override
+    public User getUserByMailLogin(String login, String email){
+        Transaction tx = persistence.createTransaction();
+        EntityManager em = persistence.getEntityManager();
+        try {
+            TypedQuery q = em.createQuery("select user from sec$User user where (user.login = ?1 or user.email = ?2)" +
+                    " and user.deleteTs is null", User.class);
+            q.setParameter(1, login);
+            q.setParameter(2, email);
+            List resultList = q.getResultList();
+            if ((resultList != null) && !resultList.isEmpty())
+                return (User) resultList.get(0);
             else return null;
         } catch (Exception e) {
             e.printStackTrace();
