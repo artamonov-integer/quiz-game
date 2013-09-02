@@ -22,6 +22,30 @@ public class Question extends StandardEntity {
     @JoinColumn(name = "IMAGE")
     protected FileDescriptor image;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "IMAGE_MID")
+    protected FileDescriptor imageMid;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "IMAGE_HIGH")
+    protected FileDescriptor imageHigh;
+
+    public FileDescriptor getImageMid() {
+        return imageMid;
+    }
+
+    public void setImageMid(FileDescriptor imageMid) {
+        this.imageMid = imageMid;
+    }
+
+    public FileDescriptor getImageHigh() {
+        return imageHigh;
+    }
+
+    public void setImageHigh(FileDescriptor imageHigh) {
+        this.imageHigh = imageHigh;
+    }
+
     public String getContent() {
         return content;
     }

@@ -34,7 +34,7 @@
                 <field id="content"/>
                 <field id="stage"/>
                 <field id="answer" optionsDatasource="answerDs"/>
-                <field id="image" optionsDatasource="fileDescriptorDs"/>
+                <field id="image" optionsDatasource="fileDescriptorDs" visible="false"/>
             </column>
         </fieldGroup>
         <iframe id="buttons" src="/com/haulmont/cuba/gui/edit-window.actions.xml"/>

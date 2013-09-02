@@ -8,7 +8,7 @@ public interface QuizDataService {
 
     public String getAnswersXml();
 
-    public String getQuestionsXml();
+    public String getQuestionsXml(String quality);
 
     public void setConnectionSettings(String host, String port, String imagePort);
 

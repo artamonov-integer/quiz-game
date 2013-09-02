@@ -8,10 +8,14 @@
     <view entity="quiz$Question" name="question.edit" extends="_local">
         <property name="image" view="_local"/>
         <property name="answer" view="_local"/>
+        <property name="imageMid" view="_local"/>
+        <property name="imageHigh" view="_local"/>
     </view>
 
     <view entity="quiz$Question" name="question.browse" extends="_local">
         <property name="image" view="_minimal"/>
+        <property name="imageMid" view="_minimal"/>
+        <property name="imageHigh" view="_minimal"/>
         <property name="answer" view="_minimal"/>
     </view>
 

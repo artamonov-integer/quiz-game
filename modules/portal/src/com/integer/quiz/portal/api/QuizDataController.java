@@ -44,7 +44,7 @@ public class QuizDataController {
 
     @RequestMapping(value = "/api/getQuestions", method = RequestMethod.GET)
     public void getQuestion(
-//            @RequestParam(value = "s") String stageStr,
+            @RequestParam(value = "q") String qualityStr,
             HttpServletRequest request,
             HttpServletResponse
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
@@ -60,7 +60,7 @@ public class QuizDataController {
 //                response.getWriter().print("wrong stage!");
 //                return;
 //            }
-            String resultStringData = quizDataService.getQuestionsXml();
+            String resultStringData = quizDataService.getQuestionsXml(qualityStr);
             response.getWriter().print(resultStringData);
 
         } catch (Exception ex) {

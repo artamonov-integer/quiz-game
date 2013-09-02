@@ -36,6 +36,15 @@ foreign key (IMAGE) references SYS_FILE(ID)^
 
 alter table quiz_question add column STAGE integer^
 
+alter table QUIZ_QUESTION add column IMAGE_MID uuid^
+alter table QUIZ_QUESTION add column IMAGE_HIGH uuid^
+
+alter table QUIZ_QUESTION add constraint FK_QUIZ_QUESTION_MID_TO_SYS_FILE
+foreign key (IMAGE_MID) references SYS_FILE(ID)^
+
+alter table QUIZ_QUESTION add constraint FK_QUIZ_QUESTION_HIGH_TO_SYS_FILE
+foreign key (IMAGE_HIGH) references SYS_FILE(ID)^
+
 ----- QUIZ_SCORE creation -----
 create table QUIZ_SCORE (
     ID uuid not null,
@@ -54,8 +63,3 @@ create table QUIZ_SCORE (
 
 alter table QUIZ_SCORE add constraint FK_QUIZ_SCORE_TO_SEC_USER
 foreign key (USER_ID) references SEC_USER(ID)^
-
-
-
-
-

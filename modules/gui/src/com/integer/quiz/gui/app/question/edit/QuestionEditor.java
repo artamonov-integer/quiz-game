@@ -1,10 +1,9 @@
 package com.integer.quiz.gui.app.question.edit;
 
+import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.entity.FileDescriptor;
-import com.haulmont.cuba.core.global.FileStorageException;
 import com.haulmont.cuba.core.sys.AppContext;
 import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.data.DatasourceListener;
@@ -12,9 +11,13 @@ import com.haulmont.cuba.gui.upload.FileUploadingAPI;
 import com.integer.quiz.entity.Answer;
 import com.integer.quiz.entity.Question;
 import com.integer.quiz.gui.utils.PictureHelper;
+import com.integer.quiz.service.QuizImageService;
+import org.apache.commons.lang.StringUtils;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.Map;
+import java.util.UUID;
 
 public class QuestionEditor extends AbstractEditor {
 
@@ -41,6 +44,9 @@ public class QuestionEditor extends AbstractEditor {
 
     @Inject
     private CollectionDatasource answerDs;
+
+    @Inject
+    private QuizImageService quizImageService;
 
     private PictureHelper emb;
 
@@ -69,15 +75,32 @@ public class QuestionEditor extends AbstractEditor {
         photoLoader.addListener(new FileUploadField.ListenerAdapter() {
             @Override
             public void uploadSucceeded(Event event) {
-                FileUploadingAPI fileUploading = AppContext.getBean(FileUploadingAPI.NAME);
-                try {
-                    FileDescriptor descriptor = fileUploading.getFileDescriptor(photoLoader.getFileId(), photoLoader.getFileName());
-                    fileUploading.putFileIntoStorage(photoLoader.getFileId(), descriptor);
-                    questionDs.getItem().setImage(descriptor);
-                    emb.refreshPicture(descriptor);
-                } catch (FileStorageException e) {
-                    throw new RuntimeException(e);
-                }
+                String ext = getFileExt(photoLoader.getFileName());
+                if (ext.equals("jpg") || ext.equals("png")) {
+                    FileUploadingAPI fileUploading = AppContext.getBean(FileUploadingAPI.NAME);
+                    try {
+                        FileDescriptor descriptor = fileUploading.getFileDescriptor(photoLoader.getFileId(), photoLoader.getFileName());
+                        File file = fileUploading.getFile(photoLoader.getFileId());
+                        if (file != null) {
+                            //addNewImage(file);
+                            //Boolean isUpdated = quizImageService.saveImage(file,file);
+                            //fileUploading.putFileIntoStorage(photoLoader.getFileId(), descriptor);
+                            //Image img =
+                            //if (isUpdated) {
+                            FileDescriptor imageLow = getNewImage(file, 10, ext);
+                            questionDs.getItem().setImage(imageLow);
+                            questionDs.getItem().setImageMid(getNewImage(file, 20, ext));
+                            questionDs.getItem().setImageHigh(getNewImage(file, 30, ext));
+
+                            emb.refreshPicture(imageLow);
+                            //fileUploading.putFileIntoStorage(photoLoader.getFileId(), descriptor);
+                            //}
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else
+                    showNotification(getMessage("Quiz.WrongImageExt"), NotificationType.WARNING);
             }
         });
 
@@ -111,5 +134,29 @@ public class QuestionEditor extends AbstractEditor {
                 }
             }
         });
+    }
+
+    private String getFileExt(String fileName) {
+        int i = fileName.lastIndexOf('.');
+        if (i > -1)
+            return StringUtils.substring(fileName, i+1);
+        else
+            return "";
+    }
+
+    public FileDescriptor getNewImage(File file, Integer quality,String ext) {
+        FileDescriptor newFd = null;
+        try {
+            FileUploadingAPI fileUploading = AppContext.getBean(FileUploadingAPI.NAME);
+            UUID newFileId = fileUploading.createEmptyFile();
+            File newFile = fileUploading.getFile(newFileId);
+            quizImageService.saveImage(file, newFile, quality, ext);
+            newFd = fileUploading.getFileDescriptor(newFileId, newFile.getName() + "." + ext);
+            fileUploading.putFileIntoStorage(newFileId, newFd);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newFd;
     }
 }

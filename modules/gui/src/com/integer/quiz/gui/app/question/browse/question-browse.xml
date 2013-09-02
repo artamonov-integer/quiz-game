@@ -23,6 +23,8 @@
                 <column id="stage"/>
                 <column id="answer"/>
                 <column id="image"/>
+                <column id="imageMid"/>
+                <column id="imageHigh"/>
             </columns>
             <rows datasource="questionDs"/>
         </table>

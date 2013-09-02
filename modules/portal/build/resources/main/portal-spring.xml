@@ -26,6 +26,8 @@
             <map>
                 <entry key="quiz_QuizDataService"
                        value="com.integer.quiz.service.QuizDataService"/>
+                <entry key="quiz_QuizImageService"
+                       value="com.integer.quiz.service.QuizImageService"/>
             </map>
         </property>
     </bean>

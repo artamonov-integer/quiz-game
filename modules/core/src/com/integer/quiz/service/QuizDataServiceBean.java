@@ -94,7 +94,7 @@ public class QuizDataServiceBean implements QuizDataService {
     }
 
     @Override
-    public String getQuestionsXml() {
+    public String getQuestionsXml(String quality) {
         String s = "";
         List<Question> questionList = storage.getQuestions();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -111,11 +111,23 @@ public class QuizDataServiceBean implements QuizDataService {
             if (answerListSize == null)
                 refreshAnswerList();
             List<Element> elementList = new ArrayList<>();
-            for (int i = 0; i < 100; i++)
+            //for (int i = 0; i < 100; i++)
                 for (Question question : questionList) {
                     Element rateElement = document.createElement("question");
                     rateElement.setAttribute("content", question.getContent());
-                    FileDescriptor image = question.getImage();
+
+                    FileDescriptor image = null;
+                    switch (quality){
+                        case "10":image=question.getImage();
+                            break;
+                        case "20":image=question.getImageMid();
+                            break;
+                        case "30":image=question.getImageHigh();
+                            break;
+                        default:image=null;
+                            break;
+                    }
+
                     if (image != null && question.getAnswer() != null) {
                         DateFormat df = new SimpleDateFormat("yyyy/MM/dd/");
                         String imageStr = "http://" + host + ":" + imagePort + "/" + df.format(image.getCreateDate()) + image.getFileName();
@@ -272,16 +284,16 @@ public class QuizDataServiceBean implements QuizDataService {
                 score.setPoints(points);
                 score.setUser(user);
                 score.setQuizType(quizType);
-                response = "3";
+                response = "add record";
             } else {
                 if (score.getPoints() < points) {
                     score.setPoints(points);
-                    response = "1";
+                    response = "new record";
                 } else
-                    response = "2";
+                    response = "no record";
             }
             storage.createOrUpdateEntity(score);
-        } else return user != null ? "4" : "5";
+        } else return user != null ? "wrong quiz type" : "no user in database";
         return response;
     }
 
@@ -358,15 +370,15 @@ public class QuizDataServiceBean implements QuizDataService {
                 Boolean isSend = sendLink(getMailText(user.getId().toString()), user.getEmail());
                 if(isSend){
                     storage.createOrUpdateEntity(user);
-                    return "1";
+                    return "confirm link was send";
                 }
                 else
-                    return "3";
+                    return "confirm link not send";
             }
             else
-                return "2";
+                return "user already exist";
         }
-        return "4";
+        return "empty data";
     }
 
     @Override
@@ -393,12 +405,12 @@ public class QuizDataServiceBean implements QuizDataService {
                 storage.createOrUpdateEntity(userRole);
                 user.setActive(true);
                 storage.createOrUpdateEntity(user);
-                return "1";
+                return "registration confirm";
             }
             else
-                return "3";
+                return "registration already confirm";
         }
-        return "2";
+        return "registration not confirm";
     }
 
     private void refreshParticipantGroup() {
