@@ -14,7 +14,7 @@ import java.util.List;
 @NamePattern("%s|content")
 public class Answer extends StandardEntity{
 
-    @Column(name = "CONTENT")
+    @Column(name = "CONTENT", unique = true)
     protected String content;
 
     @OneToMany(mappedBy = "answer", fetch = FetchType.LAZY)

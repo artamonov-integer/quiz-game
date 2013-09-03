@@ -123,7 +123,7 @@ public class QuizDataController {
 //                response.getWriter().print("wrong number parameter!");
 //                return;
 //            }
-            String resultStringData = quizDataService.getTopScoreXml(sessionId);
+            String resultStringData = quizDataService.getScoreXml(sessionId);
             response.getWriter().print(resultStringData);
 
         } catch (Exception ex) {

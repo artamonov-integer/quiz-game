@@ -16,9 +16,9 @@ public interface QuizDataService {
 
     public void refreshAnswerList();
 
-    public String getTopScoreXml(String sessionId);
+    //public String getTopScoreXml(String sessionId);
 
-    public String getScoreXml(Integer type, String sessionId);
+    public String getScoreXml(String sessionId);
 
     public String addScore(Integer points, Integer type);
 

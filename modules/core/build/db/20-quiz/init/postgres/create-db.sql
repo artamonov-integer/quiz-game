@@ -63,3 +63,7 @@ create table QUIZ_SCORE (
 
 alter table QUIZ_SCORE add constraint FK_QUIZ_SCORE_TO_SEC_USER
 foreign key (USER_ID) references SEC_USER(ID)^
+
+
+create unique index IDX_QUIZ_ANSWER_CONTENT on QUIZ_ANSWER(CONTENT) where DELETE_TS is null^
+

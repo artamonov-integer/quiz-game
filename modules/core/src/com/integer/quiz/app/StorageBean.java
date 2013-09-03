@@ -116,7 +116,7 @@ public class StorageBean implements Storage {
         map.put("position", "");
         map.put("points", "");
         if (score != null && score.getPoints() != null) {
-            Long position = getScorePosition(score.getPoints(),type);
+            Long position = getScorePosition(score.getPoints(),type, user);
             if (position != null) {
                 map.put("position", position.toString());
                 map.put("points", score.getPoints().toString());
@@ -220,15 +220,61 @@ public class StorageBean implements Storage {
         }
     }
 
-    public Long getScorePosition(Integer points, Integer type) {
+    @Override
+    public List<Score> getNeighborScores(Integer count, Integer type, User user){
+        Transaction tx = persistence.createTransaction();
+        EntityManager em = persistence.getEntityManager();
+        List<Score> resultList = new ArrayList<>();
+        List<Score> scoreList = null;
+        Score score = getScore(type, user);
+        em.setView(MetadataProvider.getViewRepository().getView(Score.class, "score.edit"));
+        TypedQuery<Score> q;
+        try {
+            q = em.createQuery("SELECT score FROM quiz$Score score where (score.points > ?2" +
+                    " or (score.points = ?2 and score.user.login < ?3)) and score.quizType=?1" +
+                    " order by score.points, score.user.login desc", Score.class);
+            q.setParameter(1, type);
+            q.setParameter(2, score.getPoints());
+            q.setParameter(3, user.getLogin());
+            q.setMaxResults(count);
+            scoreList = q.getResultList();
+            if(!scoreList.isEmpty()){
+                Integer size = scoreList.size()-1;
+                while (size>=0) {
+                    resultList.add(scoreList.get(size));
+                    size--;
+                }
+            }
+            q = em.createQuery("SELECT score FROM quiz$Score score where (score.points < ?2" +
+                    " or (score.points = ?2 and score.user.login >= ?3)) and score.quizType=?1" +
+                    " order by score.points desc, score.user.login", Score.class);
+            q.setParameter(1, type);
+            q.setParameter(2, score.getPoints());
+            q.setParameter(3, user.getLogin());
+            q.setMaxResults(count+1);
+            scoreList = q.getResultList();
+            if(!scoreList.isEmpty()){
+                for (Score s:scoreList)
+                    resultList.add(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            tx.end();
+        }
+        return resultList;
+    }
+
+    public Long getScorePosition(Integer points, Integer type, User user) {
         Long position = null;
         Transaction tx = persistence.createTransaction();
         try {
             EntityManager em = persistence.getEntityManager();
-            Query q = em.createQuery("select count(score.id) from quiz$Score score where score.points > ?1" +
-                    " and score.quizType = ?2");
+            Query q = em.createQuery("select count(score.id) from quiz$Score score where (score.points > ?1" +
+                    " or (score.points = ?1 and score.user.login < ?3)) and score.quizType = ?2");
             q.setParameter(1, points);
-            q.setParameter(2,type);
+            q.setParameter(2, type);
+            q.setParameter(3, user.getLogin());
             position = (Long) q.getSingleResult() + 1;
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,14 +10,14 @@ import java.io.File;
 @Service(QuizImageService.NAME)
 public class QuizImageServiceBean implements QuizImageService{
 
-    private static final int IMG_WIDTH_L = 800;
-    private static final int IMG_HEIGHT_L = 480;
+    private static final int IMG_WIDTH_L = 640;
+    private static final int IMG_HEIGHT_L = 360;
 
-    private static final int IMG_WIDTH_M = 1280;
-    private static final int IMG_HEIGHT_M = 720;
+    private static final int IMG_WIDTH_M = 854;
+    private static final int IMG_HEIGHT_M = 480;
 
-    private static final int IMG_WIDTH_H = 1920;
-    private static final int IMG_HEIGHT_H = 1080;
+    private static final int IMG_WIDTH_H = 1280;
+    private static final int IMG_HEIGHT_H = 720;
 
     @Override
     public Boolean saveImage(File file,File newFile,int quality,String ext){
