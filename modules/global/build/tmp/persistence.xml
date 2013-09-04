@@ -9,6 +9,9 @@
     <class>
       com.integer.quiz.entity.Score
     </class>
+    <class>
+      com.integer.quiz.entity.ScoreHistory
+    </class>
     <properties>
       <property name="openjpa.DetachState" value="loaded(DetachedStateField=true, DetachedStateManager=true)"/>
     </properties>

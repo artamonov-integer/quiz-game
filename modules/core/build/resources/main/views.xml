@@ -26,4 +26,13 @@
     <view entity="quiz$Score" name="score.edit" extends="_local">
         <property name="user" view="_local"/>
     </view>
+
+    <view entity="quiz$ScoreHistory" name="scoreHistory.browse" extends="_local">
+        <property name="user" view="_minimal"/>
+        <property name="createTs"/>
+    </view>
+
+    <view entity="quiz$ScoreHistory" name="scoreHistory.edit" extends="_local">
+        <property name="user" view="_local"/>
+    </view>
 </views>

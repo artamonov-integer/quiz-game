@@ -6,9 +6,7 @@ import com.haulmont.cuba.core.global.MetadataProvider;
 import com.haulmont.cuba.security.entity.Group;
 import com.haulmont.cuba.security.entity.Role;
 import com.haulmont.cuba.security.entity.User;
-import com.integer.quiz.entity.Answer;
-import com.integer.quiz.entity.Question;
-import com.integer.quiz.entity.Score;
+import com.integer.quiz.entity.*;
 
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
@@ -313,5 +311,14 @@ public class StorageBean implements Storage {
         Random rand = new Random();
         int randomNum = rand.nextInt((max + 1) - min) + min;
         return randomNum;
+    }
+
+    @Override
+    public void addScoreHistory(Integer points, QuizType quizType, User user){
+        ScoreHistory scoreHistory = new ScoreHistory();
+        scoreHistory.setPoints(points);
+        scoreHistory.setQuizType(quizType);
+        scoreHistory.setUser(user);
+        createOrUpdateEntity(scoreHistory);
     }
 }

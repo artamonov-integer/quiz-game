@@ -67,3 +67,24 @@ foreign key (USER_ID) references SEC_USER(ID)^
 
 create unique index IDX_QUIZ_ANSWER_CONTENT on QUIZ_ANSWER(CONTENT) where DELETE_TS is null^
 
+----- QUIZ_SCORE_HISTORY creation -----
+create table QUIZ_SCORE_HISTORY (
+    ID uuid not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    VERSION integer,
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    POINTS integer not null,
+    TYPE integer,
+    USER_ID uuid not null,
+    primary key (ID)
+)^
+
+alter table QUIZ_SCORE_HISTORY add constraint FK_QUIZ_SCORE_HISTORY_TO_SEC_USER
+foreign key (USER_ID) references SEC_USER(ID)^
+
+
+

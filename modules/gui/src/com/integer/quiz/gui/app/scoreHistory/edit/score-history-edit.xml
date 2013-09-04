@@ -1,0 +1,26 @@
+<window xmlns="http://www.haulmont.com/schema/cuba/gui/window.xsd"
+        class="com.integer.quiz.gui.app.scoreHistory.edit.ScoreHistoryEditor"
+        messagesPack="com.integer.quiz.entity"
+        datasource="scoreHistoryDs"
+        caption="msg://scoreHistory.editor.caption">
+    <dsContext>
+        <datasource
+                id="scoreHistoryDs"
+                class="com.integer.quiz.entity.ScoreHistory"
+                view="scoreHistory.edit">
+        </datasource>
+        <collectionDatasource id="userDs" class="com.haulmont.cuba.security.entity.User" view="_minimal"/>
+
+    </dsContext>
+    <layout expand="space">
+        <fieldGroup datasource="scoreHistoryDs" stylename="edit-area" width="500px">
+            <column width="100%">
+                <field id="points"/>
+                <field id="quizType"/>
+                <field id="user" optionsDatasource="userDs"/>
+            </column>
+        </fieldGroup>
+        <iframe id="buttons" src="/com/haulmont/cuba/gui/edit-window.actions.xml"/>
+        <hbox id="space"></hbox>
+    </layout>
+</window>

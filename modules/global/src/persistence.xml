@@ -4,5 +4,6 @@
         <class>com.integer.quiz.entity.Answer</class>
         <class>com.integer.quiz.entity.Question</class>
         <class>com.integer.quiz.entity.Score</class>
+        <class>com.integer.quiz.entity.ScoreHistory</class>
     </persistence-unit>
 </persistence>

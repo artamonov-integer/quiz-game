@@ -6,6 +6,7 @@ import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.entity.Role;
 import com.integer.quiz.entity.Answer;
 import com.integer.quiz.entity.Question;
+import com.integer.quiz.entity.QuizType;
 import com.integer.quiz.entity.Score;
 
 import java.lang.String;
@@ -43,4 +44,6 @@ public interface Storage {
     public User getUserByMailLogin(String login, String email);
 
     public List<Score> getNeighborScores(Integer count, Integer type, User user);
+
+    public void addScoreHistory(Integer points, QuizType quizType, User user);
 }

@@ -301,6 +301,7 @@ public class QuizDataServiceBean implements QuizDataService {
         QuizType quizType = QuizType.fromId(type);
         User user = UserSessionProvider.getUserSession().getUser();
         if (quizType != null && user != null) {
+            storage.addScoreHistory(points, quizType, user);
             Score score = storage.getScore(type, user);
             if (score == null) {
                 score = new Score();
