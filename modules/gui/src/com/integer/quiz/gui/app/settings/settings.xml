@@ -3,13 +3,16 @@
         messagesPack="com.integer.quiz.entity"
         lookupComponent="table"
         caption="msg://settings.caption">
-    <layout spacing="true">
+    <layout spacing="true" expand="vbox">
         <grid spacing="true" width="600" stylename="edit-area">
             <columns>
                 <column/>
                 <column/>
             </columns>
             <rows>
+                <row>
+                    <label stylename="h2" value="msg://Settings.server"/>
+                </row>
                 <row>
                     <label value="msg://Settings.host" width="150"/>
                     <textField id="hostTextField" editable="true" width="250"/>
@@ -25,10 +28,48 @@
                 <row>
                     <button id="csBtn" caption="msg://Settings.changeBtn"/>
                 </row>
+
                 <row>
-                    <button id="refreshAnswersBtn" caption="msg://Settings.refreshAnswersBtn"/>
+                    <label stylename="h2" value="msg://Settings.post"/>
                 </row>
+                <row>
+                    <label value="msg://Settings.email" width="150"/>
+                    <textField id="emailTextField" editable="true" width="250"/>
+                </row>
+                <row>
+                    <label value="msg://Settings.password" width="150"/>
+                    <textField id="passwordTextField" editable="true" width="250" secret="true"/>
+                </row>
+                <row>
+                    <label value="msg://Settings.postHost" width="150"/>
+                    <textField id="postHostTextField" editable="true" width="250"/>
+                </row>
+                <row>
+                    <label value="msg://Settings.postPort" width="150"/>
+                    <textField id="postPortTextField" editable="true" width="250"/>
+                </row>
+                <row>
+                    <label value="msg://Settings.postSubject" width="150"/>
+                    <textField id="postSubjectTextField" editable="true" width="250"/>
+                </row>
+                <row>
+                    <label value="msg://Settings.postText" width="150"/>
+                    <!--<textField id="postTextField" rows="2" editable="true" width="400" height="100"/>-->
+                </row>
+                <!--<row>-->
+                <!--<button id="postBtn" caption="msg://Settings.changeBtn"/>-->
+                <!--</row>-->
+
+                <!--<row>-->
+                <!--<button id="refreshAnswersBtn" caption="msg://Settings.refreshAnswersBtn"/>-->
+                <!--</row>-->
             </rows>
         </grid>
+        <vbox id="vbox" spacing="true" expand="space">
+            <textField id="postTextField" rows="2" editable="true" width="500" height="100"/>
+            <button id="postBtn" caption="msg://Settings.changeBtn"/>
+            <button id="refreshAnswersBtn" caption="msg://Settings.refreshAnswersBtn"/>
+            <hbox id="space"/>
+        </vbox>
     </layout>
 </window>

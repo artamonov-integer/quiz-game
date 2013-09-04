@@ -14,6 +14,10 @@ public interface QuizDataService {
 
     public HashMap<String,String> getConnectionSettings();
 
+    public void setMailSettings(String mail, String password, String host, String port, String subject, String text);
+
+    public HashMap<String, String> getMailSettings();
+
     public void refreshAnswerList();
 
     //public String getTopScoreXml(String sessionId);

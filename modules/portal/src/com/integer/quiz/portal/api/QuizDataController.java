@@ -2,6 +2,8 @@ package com.integer.quiz.portal.api;
 
 import com.haulmont.cuba.portal.restapi.Authentication;
 import com.integer.quiz.service.QuizDataService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,8 @@ public class QuizDataController {
 
     private QuizDataService quizDataService;
 
+    private Log log = LogFactory.getLog(getClass());
+
     @Autowired
     public QuizDataController(QuizDataService quizDataService) {
         this.quizDataService = quizDataService;
@@ -32,10 +36,12 @@ public class QuizDataController {
             HttpServletResponse
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
         try {
+            log.info("request get answers come");
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/xml");
             String resultStringData = quizDataService.getAnswersXml();
             response.getWriter().print(resultStringData);
+            log.info("response send");
         } catch (Exception ex) {
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -49,6 +55,7 @@ public class QuizDataController {
             HttpServletResponse
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
         try {
+            log.info("request get questions come");
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/xml");
 //            Integer stage;
@@ -62,7 +69,7 @@ public class QuizDataController {
 //            }
             String resultStringData = quizDataService.getQuestionsXml(qualityStr);
             response.getWriter().print(resultStringData);
-
+            log.info("response send");
         } catch (Exception ex) {
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -106,6 +113,7 @@ public class QuizDataController {
             HttpServletRequest request,
             HttpServletResponse
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
+        log.info("request get score come");
         Authentication authentication = Authentication.me(sessionId);
         if (authentication == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -125,6 +133,7 @@ public class QuizDataController {
 //            }
             String resultStringData = quizDataService.getScoreXml(sessionId);
             response.getWriter().print(resultStringData);
+            log.info("response send");
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -142,6 +151,7 @@ public class QuizDataController {
             HttpServletRequest request,
             HttpServletResponse
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
+        log.info("request add score come");
         Authentication authentication = Authentication.me(sessionId);
         if (authentication == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -161,7 +171,7 @@ public class QuizDataController {
             }
             String resultStringData = quizDataService.addScore(points, type);
             response.getWriter().print(resultStringData);
-
+            log.info("response send");
         } catch (Exception ex) {
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -178,10 +188,12 @@ public class QuizDataController {
             HttpServletResponse
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
         try {
+            log.info("request sign up come");
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html");
             String resultStringData = quizDataService.signUp(login, email);
             response.getWriter().print(resultStringData);
+            log.info("response send");
         } catch (Exception ex) {
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -195,10 +207,12 @@ public class QuizDataController {
             HttpServletResponse
                     response) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, TransformerException {
         try {
+            log.info("request confirm registration come");
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html");
             String resultStringData = quizDataService.confirmRegistration(id);
             response.getWriter().print(resultStringData);
+            log.info("response send");
 
         } catch (Exception ex) {
             ex.printStackTrace();

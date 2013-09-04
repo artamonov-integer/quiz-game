@@ -336,6 +336,28 @@ public class QuizDataServiceBean implements QuizDataService {
         return map;
     }
 
+    @Override
+    public void setMailSettings(String mail, String password, String host, String port, String subject, String text){
+        this.d_email = mail;
+        this.d_password = password;
+        this.d_host = host;
+        this.d_port = port;
+        this.m_subject = subject;
+        this.m_text = text;
+    }
+
+    @Override
+    public HashMap<String, String> getMailSettings() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("email", this.d_email);
+        map.put("password", this.d_password);
+        map.put("host", this.d_host);
+        map.put("port", this.d_port);
+        map.put("subject", this.m_subject);
+        map.put("text", this.m_text);
+        return map;
+    }
+
     public static int randInt(int min, int max) {
         Random rand = new Random();
         int randomNum = rand.nextInt((max + 1) - min) + min;

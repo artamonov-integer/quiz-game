@@ -13,6 +13,9 @@ public class SettingsBrowser extends AbstractLookup {
     private Button csBtn;
 
     @Inject
+    private Button postBtn;
+
+    @Inject
     private Button refreshAnswersBtn;
 
     @Inject
@@ -25,15 +28,43 @@ public class SettingsBrowser extends AbstractLookup {
     private TextField imagePortTextField;
 
     @Inject
+    private TextField emailTextField;
+
+    @Inject
+    private TextField passwordTextField;
+
+    @Inject
+    private TextField postHostTextField;
+
+    @Inject
+    private TextField postPortTextField;
+
+    @Inject
+    private TextField postSubjectTextField;
+
+    @Inject
+    private TextField postTextField;
+
+    @Inject
     private QuizDataService quizDataService;
 
     @Override
     public void init(Map<String, Object> params) {
 
         HashMap<String,String> connectionMap = quizDataService.getConnectionSettings();
+        HashMap<String,String> mailMap = quizDataService.getMailSettings();
+
         hostTextField.setValue(connectionMap.get("host"));
         portTextField.setValue(connectionMap.get("port"));
         imagePortTextField.setValue(connectionMap.get("imagePort"));
+
+        emailTextField.setValue(mailMap.get("email"));
+        passwordTextField.setValue(mailMap.get("password"));
+        postHostTextField.setValue(mailMap.get("host"));
+        postPortTextField.setValue(mailMap.get("port"));
+        postSubjectTextField.setValue(mailMap.get("subject"));
+        postTextField.setValue(mailMap.get("text"));
+
         csBtn.setAction(new AbstractAction("") {
             @Override
             public void actionPerform(Component component) {
@@ -44,6 +75,21 @@ public class SettingsBrowser extends AbstractLookup {
 
             }
         });
+
+        postBtn.setAction(new AbstractAction("") {
+            @Override
+            public void actionPerform(Component component) {
+                String mail = (String)emailTextField.getValue();
+                String password = (String)passwordTextField.getValue();
+                String host = (String)postHostTextField.getValue();
+                String port = (String)postPortTextField.getValue();
+                String subject = (String)postSubjectTextField.getValue();
+                String text = (String)postTextField.getValue();
+                quizDataService.setMailSettings(mail,password,host,port,subject,text);
+
+            }
+        });
+
         refreshAnswersBtn.setAction(new AbstractAction("") {
             @Override
             public void actionPerform(Component component) {
